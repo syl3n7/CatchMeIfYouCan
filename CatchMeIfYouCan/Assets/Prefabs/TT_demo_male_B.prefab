@@ -818,6 +818,7 @@ GameObject:
   - component: {fileID: 7447163605590411544}
   - component: {fileID: 7447163605599512414}
   - component: {fileID: 8886830584470363204}
+  - component: {fileID: 2865207455606936521}
   m_Layer: 0
   m_Name: TT_demo_male_B
   m_TagString: Player
@@ -878,6 +879,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2865207455606936521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7447163605589988728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262f17f81cc321e40ae48e553e2a5b34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 10
+  _gravity: 9.81
+  _jumpSpeed: 2
+  _doubleJumpMultiplier: 1
 --- !u!1 &7447163605589988732
 GameObject:
   m_ObjectHideFlags: 0
