@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    public void LoadScene() //serve para carregar as scenes
+    public void LoadScene(string scenename) //serve para carregar as scenes
     {
-        SceneManager.LoadScene("Level1");
+        SceneManager.LoadScene(scenename);
     }
 
     public void QuitGame() //serve para terminar o processo onde o jogo e executado

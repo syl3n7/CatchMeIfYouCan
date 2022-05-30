@@ -11,7 +11,7 @@ public class PauseMenu : MonoBehaviour
     {
         Application.targetFrameRate = 60; //limit fps to 60
         inputManager = GetComponent<InputManager>();
-        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         painel.SetActive(false);
     }
 
@@ -19,7 +19,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (inputManager.onFoot.Pause.triggered)
         {
-            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             //Time.timeScale = 0f;
             painel.SetActive(!painel.activeSelf);
         }

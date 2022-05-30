@@ -1,19 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMotor : MonoBehaviour
 {
+    [Header("PlayerMovement")]
     private InputManager inputManager;
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool isGrounded;
-    public float speed = 5f;
-    public float gravity = -100f;
-    public float jumpHeight = 1.5f;
+    public float speed;
+    public float gravity;
+    public float jumpHeight;
+    public float idle;
+    public float walk;
+    public float run;
 
     [SerializeField]
-    private float _doubleJumpMultiplier = 2f;
+    private float _doubleJumpMultiplier;
     private bool _doubleJump = false;
 
     private float boostTimer = 0f;
@@ -22,25 +27,120 @@ public class PlayerMotor : MonoBehaviour
     private float boostJumpTimer = 0f;
     private bool boostingJump = false;
 
+    private float changeSpeedTimerWalk = 0f;
+    private float changeSpeedTimerRun = 0f;
+    private bool changeSpeedWalk = false;
+    private bool changeSpeedRun = false;
+
+    [Header("Death")]
+    public GameObject deathMenu;
+    private float deathTimer = 0f;
+    private bool death = false;
+
+    [Header("Audio")]
+    [SerializeField]
+    private AudioSource stepsAudio;
+
+    [SerializeField]
+    private AudioSource jumpAudio;
+
+    [Header("Animation")]
+    private Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {
         inputManager = GetComponent<InputManager>();
         controller = GetComponent<CharacterController>();
+        anim = GetComponentInChildren<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
+
+        deathMenu.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (isGrounded && !inputManager.onFoot.Move.IsPressed())
+        {
+            speed = idle;
+            anim.SetFloat("Speed", 0f);
+        }
+
+        if (isGrounded && inputManager.onFoot.Move.IsPressed())
+        {
+            speed = walk;
+            if (boosting)
+            {
+                speed *= walk;
+            }
+
+            if (changeSpeedWalk)
+            {
+                speed = walk - 2f;
+            }
+            anim.SetFloat("Speed", 0.5f);
+        }
+
+        if (isGrounded && inputManager.onFoot.Run.IsPressed())
+        {
+            speed = run;
+            if (boosting)
+            {
+                speed *= run;
+            }
+
+            if (changeSpeedRun)
+            {
+                speed = run - 2f;
+            }
+
+            anim.SetFloat("Speed", 1f);
+        }
+
+        if (inputManager.onFoot.Death.triggered)
+        {
+            anim.SetTrigger("Death");
+            death = true;
+        }
+
         isGrounded = controller.isGrounded;
+
+        if (isGrounded && inputManager.onFoot.Move.IsPressed() && stepsAudio.isPlaying == false)
+        {
+            stepsAudio.Play();
+        }
+        else
+        {
+            if (!isGrounded)
+            {
+                stepsAudio.Stop();
+            }
+
+            if (!inputManager.onFoot.Move.IsPressed())
+            {
+                stepsAudio.Stop();
+            }
+        }
+
+        if (!isGrounded && jumpAudio.isPlaying == false)
+        {
+            jumpAudio.Play();
+        }
+        else
+        {
+            if (isGrounded)
+            {
+                jumpAudio.Stop();
+            }
+        }
 
         if (boosting)
         {
             boostTimer += Time.deltaTime;
             if (boostTimer >= 3f)
             {
-                speed = 10f;
+                speed = run;
                 boostTimer = 0f;
                 boosting = false;
             }
@@ -51,15 +151,48 @@ public class PlayerMotor : MonoBehaviour
             boostJumpTimer += Time.deltaTime;
             if (boostJumpTimer >= 3f)
             {
-                jumpHeight = 1.5f;
-                _doubleJumpMultiplier = 2f;
+                jumpHeight = 3;
+                _doubleJumpMultiplier = 5f;
                 boostJumpTimer = 0f;
                 boostingJump = false;
             }
         }
 
+        if (changeSpeedWalk)
+        {
+            changeSpeedTimerWalk += Time.deltaTime;
+            if (changeSpeedTimerWalk >= 1.5f)
+            {
+                speed = walk;
+                changeSpeedWalk = false;
+            }
+        }
+
+        if (changeSpeedRun)
+        {
+            changeSpeedTimerRun += Time.deltaTime;
+            if (changeSpeedTimerRun >= 1.5f)
+            {
+                speed = run;
+                changeSpeedRun = false;
+            }
+        }
+
+        if (death)
+        {
+            deathTimer += Time.deltaTime;
+            if (deathTimer >= 1f)
+            {
+                deathMenu.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
     }
 
+    public void DeathMenu()
+    {
+        SceneManager.LoadScene("Level1");
+    }
     //receive the inputs for our InputManager.cs and apply them to our character controller.
     public void ProcessMove(Vector2 input)
     {
@@ -69,16 +202,15 @@ public class PlayerMotor : MonoBehaviour
         controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
         playerVelocity.y += gravity * Time.deltaTime;
 
-
-        if(isGrounded && playerVelocity.y < 0)
-            playerVelocity.y =  -2f;
+        if (isGrounded && playerVelocity.y < 0)
+            playerVelocity.y = -2f;
         controller.Move(playerVelocity * Time.deltaTime);
-        
+
     }
 
     public void Jump()
     {
-        if(isGrounded)
+        if (isGrounded)
         {
             _doubleJump = true;
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
@@ -88,6 +220,9 @@ public class PlayerMotor : MonoBehaviour
             if (_doubleJump)
             {
                 playerVelocity.y = speed * _doubleJumpMultiplier;
+                changeSpeedWalk = true;
+                changeSpeedRun = true;
+                jumpAudio.Play();
                 _doubleJump = false;
             }
         }
@@ -98,15 +233,14 @@ public class PlayerMotor : MonoBehaviour
         if (other.gameObject.name == "SpeedBoost1" || other.gameObject.name == "SpeedBoost2")
         {
             boosting = true;
-            speed = 15f;
             Destroy(other.gameObject);
         }
 
         if (other.gameObject.name == "JumpBoost1")
         {
             boostingJump = true;
-            jumpHeight = 4f;
-            _doubleJumpMultiplier = 3f;
+            jumpHeight = 6f;
+            _doubleJumpMultiplier = 7f;
             Destroy(other.gameObject);
         }
     }

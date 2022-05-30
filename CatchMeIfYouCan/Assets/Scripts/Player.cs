@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        Vector3 direction = new Vector3(verticalInput, 0, horizontalInput); // corrigi a direcao do vert / horiz /by syl3n7
+        Vector3 direction = new Vector3(horizontalInput, 0, verticalInput);
 
         if (_controller.isGrounded)
         {
