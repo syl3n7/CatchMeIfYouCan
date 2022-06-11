@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class HideObjTimer : MonoBehaviour
+public class ObjTimer: MonoBehaviour
 {
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision other)
     {
         StartCoroutine(ShowAndHide());
     }

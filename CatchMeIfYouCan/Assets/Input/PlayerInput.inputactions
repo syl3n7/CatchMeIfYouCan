@@ -174,7 +174,7 @@
                 {
                     "name": "up",
                     "id": "16a84ec5-11cb-43be-aed0-b5dd47b24fb8",
-                    "path": "<Gamepad>/leftStick/up",
+                    "path": "<XInputController>/leftStick/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -185,7 +185,7 @@
                 {
                     "name": "down",
                     "id": "64101529-188b-4818-8ec0-b08291b38325",
-                    "path": "<Gamepad>/leftStick/down",
+                    "path": "<XInputController>/leftStick/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -196,7 +196,7 @@
                 {
                     "name": "left",
                     "id": "9986817b-3fa5-48d4-a79e-0bdb89bff2a6",
-                    "path": "<Gamepad>/leftStick/left",
+                    "path": "<XInputController>/leftStick/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -207,7 +207,7 @@
                 {
                     "name": "right",
                     "id": "15e62b77-a30e-4f70-99d8-a0f31588217b",
-                    "path": "<Gamepad>/leftStick/right",
+                    "path": "<XInputController>/leftStick/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -229,7 +229,7 @@
                 {
                     "name": "",
                     "id": "58e14809-9111-4879-a141-51a15f60cddd",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<XInputController>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -251,7 +251,7 @@
                 {
                     "name": "",
                     "id": "afbf120f-f1d7-4e6a-bfe2-0c05c1afbc1a",
-                    "path": "<Gamepad>/rightStick",
+                    "path": "<XInputController>/rightStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -263,6 +263,17 @@
                     "name": "",
                     "id": "4120e8a7-cee9-407a-8e5a-1d700ca452c2",
                     "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bd430d86-fe4e-48c4-bbbe-017af6542d0f",
+                    "path": "<XInputController>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -288,6 +299,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2982efe0-c41f-4cf8-979d-0c7a056aab4a",
+                    "path": "<XInputController>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false

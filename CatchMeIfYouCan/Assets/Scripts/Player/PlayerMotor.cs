@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMotor : MonoBehaviour
 {
+    [SerializeField]
+    public Transform p;
+
     [Header("PlayerMovement")]
     private InputManager inputManager;
     private CharacterController controller;
@@ -34,8 +37,8 @@ public class PlayerMotor : MonoBehaviour
 
     [Header("Death")]
     public GameObject deathMenu;
-    private float deathTimer = 0f;
-    private bool death = false;
+    [SerializeField]
+    public bool death = false;
 
     [Header("Audio")]
     [SerializeField]
@@ -54,7 +57,6 @@ public class PlayerMotor : MonoBehaviour
         controller = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
-
         deathMenu.SetActive(false);
     }
 
@@ -96,12 +98,6 @@ public class PlayerMotor : MonoBehaviour
             }
 
             anim.SetFloat("Speed", 1f);
-        }
-
-        if (inputManager.onFoot.Death.triggered)
-        {
-            anim.SetTrigger("Death");
-            death = true;
         }
 
         isGrounded = controller.isGrounded;
@@ -180,18 +176,18 @@ public class PlayerMotor : MonoBehaviour
 
         if (death)
         {
-            deathTimer += Time.deltaTime;
-            if (deathTimer >= 1f)
-            {
-                deathMenu.SetActive(true);
-                Cursor.lockState = CursorLockMode.None;
-            }
+            deathMenu.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 
     public void DeathMenu()
     {
-        SceneManager.LoadScene("Level1");
+        deathMenu.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        death = false;
+        speed = idle;
+        anim.SetFloat("Speed", 0f);
     }
     //receive the inputs for our InputManager.cs and apply them to our character controller.
     public void ProcessMove(Vector2 input)
@@ -205,7 +201,6 @@ public class PlayerMotor : MonoBehaviour
         if (isGrounded && playerVelocity.y < 0)
             playerVelocity.y = -2f;
         controller.Move(playerVelocity * Time.deltaTime);
-
     }
 
     public void Jump()
@@ -228,6 +223,21 @@ public class PlayerMotor : MonoBehaviour
         }
     }
 
+     
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.tag == "Terrain")
+        {
+            anim.SetTrigger("Death");
+            gameObject.transform.position = p.position + Vector3.up;
+            death = true;
+        }
+
+        if (hit.gameObject.tag == "CheckPoint")
+        {
+            p = hit.transform;
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == "SpeedBoost1" || other.gameObject.name == "SpeedBoost2")

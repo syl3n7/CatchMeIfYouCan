@@ -8,6 +8,8 @@ TagManager:
   - disk
   - Hcapsule
   - CheckPoint
+  - SpeedBoost
+  - Terrain
   layers:
   - Default
   - TransparentFX

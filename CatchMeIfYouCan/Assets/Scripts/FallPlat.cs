@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FallPlat : MonoBehaviour
 {
-	public float fallTime = 0.5f;
+	public float fallTime = 2.5f;
 
 
 	void OnCollisionEnter(Collision collision)
