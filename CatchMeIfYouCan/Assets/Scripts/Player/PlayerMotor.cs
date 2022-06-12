@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +8,9 @@ public class PlayerMotor : MonoBehaviour
 {
     [SerializeField]
     public Transform p;
+    public GameObject[] balls;
+    public GameObject[] balls2;
+    public GameObject[] balls3;
 
     [Header("PlayerMovement")]
     private InputManager inputManager;
@@ -37,8 +41,6 @@ public class PlayerMotor : MonoBehaviour
 
     [Header("Death")]
     public GameObject deathMenu;
-    [SerializeField]
-    public bool death = false;
 
     [Header("Audio")]
     [SerializeField]
@@ -50,8 +52,7 @@ public class PlayerMotor : MonoBehaviour
     [Header("Animation")]
     private Animator anim;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         inputManager = GetComponent<InputManager>();
         controller = GetComponent<CharacterController>();
@@ -60,8 +61,7 @@ public class PlayerMotor : MonoBehaviour
         deathMenu.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (isGrounded && !inputManager.onFoot.Move.IsPressed())
         {
@@ -164,19 +164,34 @@ public class PlayerMotor : MonoBehaviour
             }
         }
 
-        if (changeSpeedRun)
+        if (!changeSpeedRun)
+        {
+            
+        }
+        else
         {
             changeSpeedTimerRun += Time.deltaTime;
-            if (changeSpeedTimerRun >= 1.5f)
+            if (!(changeSpeedTimerRun >= 1.5f))
+            {
+
+            }
+            else
             {
                 speed = run;
                 changeSpeedRun = false;
             }
         }
+    }
 
-        if (death)
+    private void FixedUpdate()
+    {
+        if (!deathMenu.activeSelf)
         {
-            deathMenu.SetActive(true);
+
+        }
+        else
+        {
+            gameObject.transform.position = p.position + Vector3.up + Vector3.up;
             Cursor.lockState = CursorLockMode.None;
         }
     }
@@ -185,7 +200,6 @@ public class PlayerMotor : MonoBehaviour
     {
         deathMenu.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
-        death = false;
         speed = idle;
         anim.SetFloat("Speed", 0f);
     }
@@ -205,14 +219,13 @@ public class PlayerMotor : MonoBehaviour
 
     public void Jump()
     {
-        if (isGrounded)
+        if (!isGrounded)
         {
-            _doubleJump = true;
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
-        }
-        else
-        {
-            if (_doubleJump)
+            if (!_doubleJump)
+            {
+
+            }
+            else
             {
                 playerVelocity.y = speed * _doubleJumpMultiplier;
                 changeSpeedWalk = true;
@@ -221,36 +234,93 @@ public class PlayerMotor : MonoBehaviour
                 _doubleJump = false;
             }
         }
+        else
+        {
+            _doubleJump = true;
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
+
+        }
     }
 
      
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.gameObject.tag == "Terrain")
+        if (!hit.gameObject.CompareTag("Terrain"))
+        {
+
+        }
+        else
         {
             anim.SetTrigger("Death");
-            gameObject.transform.position = p.position + Vector3.up;
-            death = true;
+            deathMenu.SetActive(true);
         }
 
-        if (hit.gameObject.tag == "CheckPoint")
+        if (!hit.gameObject.CompareTag("CheckPoint"))
+        {
+
+        }
+        else
         {
             p = hit.transform;
+        }
+
+        if (!hit.gameObject.CompareTag("Balls"))
+        {
+
+        }
+        else
+        {
+            foreach (var ball in balls)
+            {
+                ball.SetActive(true);
+            }
+        }
+
+        if (!hit.gameObject.CompareTag("Balls2"))
+        {
+
+        }
+        else
+        {
+            foreach (var ball in balls2)
+            {
+                ball.SetActive(true);
+            }
+        }
+
+        if (!hit.gameObject.CompareTag("Balls3"))
+        {
+
+        }
+        else
+        {
+            foreach (var ball in balls3)
+            {
+                ball.SetActive(true);
+            }
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "SpeedBoost1" || other.gameObject.name == "SpeedBoost2")
+        if (!other.gameObject.CompareTag("SpeedBoost"))
+        {
+
+        }
+        else
         {
             boosting = true;
             Destroy(other.gameObject);
         }
 
-        if (other.gameObject.name == "JumpBoost1")
+        if (!other.gameObject.CompareTag("JumpBoost"))
+        {
+
+        }
+        else
         {
             boostingJump = true;
-            jumpHeight = 6f;
-            _doubleJumpMultiplier = 7f;
+            jumpHeight = 5f;
+            _doubleJumpMultiplier = 6f;
             Destroy(other.gameObject);
         }
     }

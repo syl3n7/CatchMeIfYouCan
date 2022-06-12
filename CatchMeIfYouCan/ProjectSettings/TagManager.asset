@@ -10,6 +10,11 @@ TagManager:
   - CheckPoint
   - SpeedBoost
   - Terrain
+  - Wall
+  - Balls
+  - JumpBoost
+  - Balls2
+  - Balls3
   layers:
   - Default
   - TransparentFX
