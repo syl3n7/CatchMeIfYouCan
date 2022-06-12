@@ -15,6 +15,7 @@ TagManager:
   - JumpBoost
   - Balls2
   - Balls3
+  - Finnish
   layers:
   - Default
   - TransparentFX

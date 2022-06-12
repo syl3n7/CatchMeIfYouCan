@@ -245,6 +245,15 @@ public class PlayerMotor : MonoBehaviour
      
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        if (!hit.gameObject.CompareTag("Finnish"))
+        {
+
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Finnish");
+        }
+
         if (!hit.gameObject.CompareTag("Terrain"))
         {
 
