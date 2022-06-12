@@ -134,7 +134,7 @@ public class PlayerMotor : MonoBehaviour
         if (boosting)
         {
             boostTimer += Time.deltaTime;
-            if (boostTimer >= 3f)
+            if (boostTimer >= 4f)
             {
                 speed = run;
                 boostTimer = 0f;
@@ -145,10 +145,10 @@ public class PlayerMotor : MonoBehaviour
         if (boostingJump)
         {
             boostJumpTimer += Time.deltaTime;
-            if (boostJumpTimer >= 3f)
+            if (boostJumpTimer >= 2f)
             {
                 jumpHeight = 3;
-                _doubleJumpMultiplier = 5f;
+                _doubleJumpMultiplier = 4f;
                 boostJumpTimer = 0f;
                 boostingJump = false;
             }
@@ -157,7 +157,7 @@ public class PlayerMotor : MonoBehaviour
         if (changeSpeedWalk)
         {
             changeSpeedTimerWalk += Time.deltaTime;
-            if (changeSpeedTimerWalk >= 1.5f)
+            if (changeSpeedTimerWalk >= 2f)
             {
                 speed = walk;
                 changeSpeedWalk = false;
@@ -171,7 +171,7 @@ public class PlayerMotor : MonoBehaviour
         else
         {
             changeSpeedTimerRun += Time.deltaTime;
-            if (!(changeSpeedTimerRun >= 1.5f))
+            if (!(changeSpeedTimerRun >= 2f))
             {
 
             }
@@ -328,8 +328,8 @@ public class PlayerMotor : MonoBehaviour
         else
         {
             boostingJump = true;
-            jumpHeight = 5f;
-            _doubleJumpMultiplier = 6f;
+            jumpHeight = 3f;
+            _doubleJumpMultiplier = 3f;
             Destroy(other.gameObject);
         }
     }

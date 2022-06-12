@@ -10,14 +10,10 @@ public class Rotator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gameObject.tag == "disk")
-        {
-            transform.Rotate(0f, speed * Time.deltaTime / 0.01f, 0f, Space.Self);
-        }
-        if(gameObject.tag == "Hcapsule")
-        {
-            transform.Rotate(0f, -speed * Time.deltaTime / 0.01f, 0f, Space.Self);
-        }
-		
+        if (!gameObject.CompareTag("disk")) { }
+        else transform.Rotate(0f, speed * Time.deltaTime / 0.01f, 0f, Space.Self);
+
+        if (!gameObject.CompareTag("Hcapsule")) { }
+        else transform.Rotate(0f, -speed * Time.deltaTime / 0.01f, 0f, Space.Self);
 	}
 }
