@@ -201,7 +201,8 @@ public class PlayerMotor : MonoBehaviour
         deathMenu.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         anim.SetTrigger("Death");
-        speed = idle;
+        boosting = false;
+        boostingJump = false;
     }
     //receive the inputs for our InputManager.cs and apply them to our character controller.
     public void ProcessMove(Vector2 input)
