@@ -200,6 +200,7 @@ public class PlayerMotor : MonoBehaviour
     {
         deathMenu.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
+        anim.SetTrigger("Death");
         speed = idle;
         anim.SetFloat("Speed", 0f);
     }
