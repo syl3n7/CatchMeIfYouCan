@@ -89,7 +89,7 @@ public class PlayerMotor : MonoBehaviour
             speed = run;
             if (boosting)
             {
-                speed *= run;
+                speed *= 2;
             }
 
             if (changeSpeedRun)
