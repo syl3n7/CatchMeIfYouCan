@@ -41,6 +41,8 @@ public class PlayerMotor : MonoBehaviour
 
     [Header("Death")]
     public GameObject deathMenu;
+    public TextMeshProGUI deathCounter;
+    private int counterDeath = 0;
 
     [Header("Audio")]
     [SerializeField]
@@ -63,6 +65,8 @@ public class PlayerMotor : MonoBehaviour
 
     private void Update()
     {
+        deathCounter.text = counterDeath.ToString();
+        
         if (isGrounded && !inputManager.onFoot.Move.IsPressed())
         {
             speed = idle;
@@ -200,6 +204,7 @@ public class PlayerMotor : MonoBehaviour
     {
         deathMenu.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
+        ++counterDeath;
         anim.SetTrigger("Death");
         boosting = false;
         boostingJump = false;
