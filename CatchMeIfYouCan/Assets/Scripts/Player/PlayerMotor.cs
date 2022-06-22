@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using TMPro;
 using UnityEngine.SceneManagement;
 
 public class PlayerMotor : MonoBehaviour
@@ -41,7 +42,7 @@ public class PlayerMotor : MonoBehaviour
 
     [Header("Death")]
     public GameObject deathMenu;
-    public TextMeshProGUI deathCounter;
+    public TextMeshProUGUI deathCounter;
     private int counterDeath = 0;
 
     [Header("Audio")]
@@ -65,7 +66,7 @@ public class PlayerMotor : MonoBehaviour
 
     private void Update()
     {
-        deathCounter.text = counterDeath.ToString();
+        deathCounter.text = "Deaths: " + counterDeath.ToString();
         
         if (isGrounded && !inputManager.onFoot.Move.IsPressed())
         {
